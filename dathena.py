@@ -24,9 +24,9 @@ RESET = Style.RESET_ALL
 API_PROVIDERS = {
     '1': {
         'name': 'Groq',
-        'type': 'openai', # Groq guna format openai
+        'type': 'openai', 
         'url': 'https://api.groq.com/openai/v1/chat/completions',
-        'model': 'llama-3.3-70b-versatile', # TUKAR INI (Jangan guna llama-3.3-70b-versatile)
+        'model': 'llama-3.3-70b-versatile', 
         'info': 'Laju gila (Groq LPU)'
     },
     '2': {
@@ -36,7 +36,7 @@ API_PROVIDERS = {
         'model': 'gemini-1.5-flash',
         'info': 'Percuma & Context besar'
     },
-    # ... sambung provider lain ...
+    
 }
 
 CONFIG_DIR = os.path.expanduser("~/.dathena")
@@ -149,7 +149,7 @@ def setup_api():
 
     slowprint(f"{W}  Pilih API provider untuk D.ATHENA:\n")
 
-    # Ini akan loop API_PROVIDERS yang kau letak kat paling atas skrip tadi
+    
     for k, v in API_PROVIDERS.items():
         print(f"{R}  [{k}] {Y}{v['name']:<12}{W} - {v['info']}{RESET}")
 
@@ -159,14 +159,14 @@ def setup_api():
     if choice not in API_PROVIDERS:
         choice = '1'
 
-    # Kita ambil data dari global API_PROVIDERS
+    
     provider = API_PROVIDERS[choice].copy()
 
     if choice == '5':
         provider['url'] = input(f"{R}  API URL: {W}").strip()
         provider['model'] = input(f"{R}  Model name: {W}").strip()
         provider['name'] = input(f"{R}  Provider name: {W}").strip()
-        provider['type'] = 'openai' # Default untuk custom selalunya format OpenAI
+        provider['type'] = 'openai' 
 
     api_key = input(f"\n{R}  Masukkan API Key untuk {provider['name']}: {W}").strip()
 
@@ -174,10 +174,10 @@ def setup_api():
         print(f"{R}  [!] API Key tidak boleh kosong!")
         sys.exit(1)
 
-    # Susunan config ni kena tally dengan fungsi ask_ai
+    
     config = {
         'api_key': api_key,
-        'provider': provider,  # Maklumat url & model ada dalam ni
+        'provider': provider,  
         'setup_date': str(datetime.now())
     }
 
@@ -193,7 +193,7 @@ def ask_ai(config, prompt, system_prompt="", retries=3):
     api_key = config.get('api_key')
     api_type = provider.get('type', 'openai')
 
-    # Header wajib untuk elak 403/400
+    
     headers = {
         'Content-Type': 'application/json',
         'User-Agent': 'D.ATHENA-Security-Agent/1.0'
@@ -292,7 +292,7 @@ def execute_simple(cmd, timeout=120):
         output_lines = []
         line_count = 0
         for line in iter(process.stdout.readline, ''):
-            # Strip ANSI codes for storage but print raw
+            
             print(f"  {line}", end='')
             clean_line = re.sub(r'\x1b\[[0-9;]*m', '', line)
             output_lines.append(clean_line)
